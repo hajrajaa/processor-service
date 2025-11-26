@@ -1,6 +1,7 @@
 package com.mst.processorservice.service;
 
 //import com.mst.processorservice.client.MetricServiceClient;
+import com.mst.processorservice.client.MetricClient;
 import com.mst.processorservice.condition.ConditionEvaluator;
 import com.mst.processorservice.model.ActionEvent;
 import com.mst.processorservice.model.ActionType;
@@ -17,8 +18,11 @@ public class ActionExecutionService {
     @Autowired
     ConditionEvaluator conditionEvaluator;
 
-//    @Autowired
-//    MetricServiceClient metricClient;
+
+    @Autowired
+    MetricClient metricClient;
+
+
 
     @Autowired
     KafkaNotificationProducer  notificationProducer;
@@ -27,19 +31,20 @@ public class ActionExecutionService {
 
     public void executeAction(ActionEvent actionEvent) {
 
-        //List<Integer> metricIds=extractMetricIds(actionEvent.conditions());
+        List<Integer> metricIds=extractMetricIds(actionEvent.conditions());
 
-//        Map<Integer,Boolean> metricResults=metricClient.validateMetricIds(convertIdsToQuery(metricIds));
-//
-//
-//        boolean passed=conditionEvaluator.evaluateCondition(actionEvent.conditions(), metricResults);
+        String idsQuery=convertIdsToQuery(metricIds);
 
-//        boolean passed =true;
-//
-//        if (!passed)
-//        {
-//            return;
-//        }
+        Map<Integer,Boolean> metricResults=metricClient.validateMetricIds(idsQuery);
+
+
+        boolean passed=conditionEvaluator.evaluateCondition(actionEvent.conditions(), metricResults);
+
+
+        if (!passed)
+        {
+            return;
+        }
 
         if (actionEvent.action_type()==ActionType.EMAIL)
         {
