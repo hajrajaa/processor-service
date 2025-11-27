@@ -7,27 +7,26 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+
+@RestControllerAdvice
 public class GlobalException {
 
-    @RestControllerAdvice
-    public class GlobalExceptionHandler {
-
-        @ExceptionHandler(MethodArgumentNotValidException.class)
-        public ResponseEntity<String> handleValidationError(MethodArgumentNotValidException ex) {
-            String error = ex.getBindingResult().getFieldError().getDefaultMessage();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        }
-
-        @ExceptionHandler(KafkaException.class)
-        public ResponseEntity<String> handleKafkaError(KafkaException ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Kafka processing error: " + ex.getMessage());
-        }
-
-        @ExceptionHandler(Exception.class)
-        public ResponseEntity<String> handleGeneral(Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Unexpected error occurred.");
-        }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidationError(MethodArgumentNotValidException ex) {
+        String error = ex.getBindingResult().getFieldError().getDefaultMessage();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
+
+    @ExceptionHandler(KafkaException.class)
+    public ResponseEntity<String> handleKafkaError(KafkaException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Kafka processing error: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGeneral(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Unexpected error occurred.");
+    }
+
 }

@@ -1,11 +1,8 @@
-package com.mst.processorservice.cosumer;
+package com.mst.processorservice.consumer;
 import com.mst.processorservice.model.ActionEvent;
 import com.mst.processorservice.service.ActionExecutionService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.support.Acknowledgment;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 @Component

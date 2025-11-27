@@ -2,7 +2,6 @@ package com.mst.processorservice.service;
 
 
 import com.mst.processorservice.model.ActionEvent;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;

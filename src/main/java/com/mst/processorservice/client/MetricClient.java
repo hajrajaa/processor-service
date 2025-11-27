@@ -1,16 +1,19 @@
 package com.mst.processorservice.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Map;
+import java.util.List;
 
 
 @FeignClient(name = "metric-service", url = "${services.metric.url}")
 public interface MetricClient {
 
-   @GetMapping
-   Map<Integer,Boolean> validateMetricIds(@RequestParam("ids") String ids);
+    @PostMapping("/metrics/check")
+    ResponseEntity<Void> validateMetricIds(@RequestBody List<Long> metricIds);
+
+
 
 }

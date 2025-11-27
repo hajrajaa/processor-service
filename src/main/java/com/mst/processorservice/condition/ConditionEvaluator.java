@@ -1,40 +1,36 @@
 package com.mst.processorservice.condition;
 
 
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.mst.processorservice.client.MetricClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.locks.Condition;
 
 @Component
 public class ConditionEvaluator {
 
-    public boolean evaluateCondition(List<List<Integer>> conditions , Map<Integer,Boolean> metricResults) {
+    @Autowired
+    MetricClient metricClient;
 
+    public boolean evaluateCondition(List<List<Integer>> conditions) {
 
         for (List<Integer> group: conditions) {
 
-            boolean groupPassed=true;
+            try
+            {
+                List<Long> metricIds = group.stream().map(Long::valueOf).toList();
 
-            for(Integer metricId: group) {
-
-                Boolean metricResult = metricResults.get(metricId);
-
-                if (metricResult == null||!metricResult) {
-                    groupPassed=false;
-                    break;
-                }
-            }
-            // or passed
-            if (groupPassed) {
+                metricClient.validateMetricIds(metricIds);
                 return true;
-            }
-        }
-        // no group passed
-        return false;
+            }catch (Exception ex)
+            {
 
+            }
+
+        }
+    return false;
 
     }
 }
+
