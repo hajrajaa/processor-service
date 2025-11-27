@@ -26,9 +26,9 @@ public class ConditionEvaluator {
     public boolean evaluateCondition(List<List<Integer>> conditions) {
 
 
-        List<List<Integer>> conditionsToCheck = new ArrayList<>();
+        List<List<Integer>>  conditionsToCheck=simplify(conditions);
 
-        for (List<Integer> group : conditions) {
+        for (List<Integer> group : conditionsToCheck) {
              boolean groupPassed=true;
 
              for(Integer metricId:group)
